@@ -121,6 +121,18 @@ resource "aws_s3_bucket_versioning" "org_cloudtrail" {
   }
 }
 
+# Explicit server-side encryption for the audit-log bucket (matches the replica).
+# SSE-S3/AES256 rather than a KMS CMK — CloudTrail writes here directly and SSE-S3
+# avoids per-account KMS key-policy management for an org-wide trail.
+resource "aws_s3_bucket_server_side_encryption_configuration" "org_cloudtrail" {
+  bucket = aws_s3_bucket.org_cloudtrail.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
 # Lifecycle Configuration
 resource "aws_s3_bucket_lifecycle_configuration" "org_cloudtrail" {
   bucket = aws_s3_bucket.org_cloudtrail.id

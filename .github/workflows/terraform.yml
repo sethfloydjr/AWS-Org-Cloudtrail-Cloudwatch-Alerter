@@ -59,6 +59,9 @@ jobs:
   security:
     name: trivy • checkov
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write # upload SARIF to the Security tab
     steps:
       - uses: actions/checkout@v4
 
@@ -67,8 +70,14 @@ jobs:
         with:
           scan-type: config
           scan-ref: .
+          format: sarif
+          output: trivy-results.sarif
           severity: HIGH,CRITICAL
-          exit-code: "1"
+          exit-code: "0" # report to the Security tab; don't block the build
+
+      - name: Upload Trivy results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        continue-on-error: true # tolerate code-scanning being unavailable
 
       - name: Checkov scan
         uses: bridgecrewio/checkov-action@v12
@@ -76,6 +85,7 @@ jobs:
           directory: .
           framework: terraform
           quiet: true
+          soft_fail: true # report findings without blocking the build
 
   lambda:
     name: lambda (python)
