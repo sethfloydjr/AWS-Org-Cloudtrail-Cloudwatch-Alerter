@@ -1,18 +1,9 @@
-data "aws_organizations_organization" "org" {}
-
-
 ##############################################
 # For cloudtrail and associated resources
 ##############################################
 data "aws_caller_identity" "current" {}
 
 data "aws_partition" "current" {}
-
-data "aws_region" "current" {}
-
-data "aws_region" "west2" {
-  provider = aws.west2
-}
 
 
 data "aws_iam_policy_document" "org_cloudtrail_bucket_policy" {
@@ -26,7 +17,7 @@ data "aws_iam_policy_document" "org_cloudtrail_bucket_policy" {
     }
 
     actions   = ["s3:GetBucketAcl"]
-    resources = ["${aws_s3_bucket.org_cloudtrail.arn}"]
+    resources = [aws_s3_bucket.org_cloudtrail.arn]
 
   }
 
@@ -96,7 +87,7 @@ data "aws_iam_policy_document" "org_cloudtrail_bucket_policy" {
       "s3:ListBucket",
       "s3:GetBucketLocation",
     ]
-    resources = ["${aws_s3_bucket.org_cloudtrail.arn}"]
+    resources = [aws_s3_bucket.org_cloudtrail.arn]
   }
 }
 
@@ -128,7 +119,7 @@ data "aws_iam_policy_document" "replication_policy" {
       "s3:ListBucket",
     ]
     resources = [
-      "${aws_s3_bucket.org_cloudtrail.arn}",
+      aws_s3_bucket.org_cloudtrail.arn,
     ]
   }
 

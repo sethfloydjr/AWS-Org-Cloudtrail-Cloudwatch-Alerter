@@ -5,6 +5,7 @@
 #
 # Do NOT run in the `default` workspace — it has no role mapping here on purpose.
 variable "workspace_iam_roles" {
+  type = map(string)
   default = {
     root = "arn:aws:iam::111111111101:role/TFAdmin" # company-root
   }

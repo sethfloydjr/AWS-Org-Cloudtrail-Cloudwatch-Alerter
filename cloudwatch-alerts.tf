@@ -283,12 +283,6 @@ locals {
   # exclusive by design (see header comment above).
   alarm_routed_alert_keys = toset(["failed-console-logins"])
 
-  # The 17 alerts that route through the subscription filter (per-event delivery).
-  subscription_routed_alerts = {
-    for k, v in local.cloudtrail_alerts : k => v
-    if !contains(local.alarm_routed_alert_keys, k)
-  }
-
   # The 1 alert (failed-console-logins) that retains its alarm.
   alarm_routed_alerts = {
     for k, v in local.cloudtrail_alerts : k => v

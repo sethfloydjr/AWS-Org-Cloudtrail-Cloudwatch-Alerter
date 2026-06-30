@@ -1,21 +1,26 @@
 variable "default_region" {
+  type    = string
   default = "us-east-1"
 }
 
 variable "service_name" {
+  type    = string
   default = "Org-Cloudtrail-Cloudwatch-Alerter"
 }
 
 variable "owning_team" {
+  type    = string
   default = "SecOps"
 }
 
 variable "automation_tf" {
+  type    = string
   default = "Terraform"
 }
 
 variable "parent_id" {
   description = "The ID of the Organizational Unit (or organization root) under which member accounts are created. Find it with `aws organizations list-roots` (root IDs look like r-abcd)."
+  type        = string
   default     = "r-abcd"
 }
 
@@ -100,33 +105,6 @@ variable "bucket_name" {
   type        = string
   default     = "company-org-cloudtrail"
 }
-
-variable "newer_noncurrent_versions" {
-  description = "The number of noncurrent versions Amazon S3 will retain. Must be a non-zero positive integer."
-  type        = number
-  default     = 5
-}
-
-variable "noncurrent_days" {
-  description = "The number of days an object is noncurrent before Amazon S3 can perform the associated action. Must be a positive integer."
-  type        = number
-  default     = 60
-}
-
-variable "sse_algorithm" {
-  description = "The server-side encryption algorithm to use for the bucket. Default is 'AES256'."
-  type        = string
-  default     = "AES256"
-}
-
-
-
-variable "storage_class" {
-  description = "The storage class used to store the object. Default is 'STANDARD_IA'."
-  type        = string
-  default     = "STANDARD_IA"
-}
-
 
 variable "s3_key_prefix" {
   description = "The prefix for the S3 bucket keys."

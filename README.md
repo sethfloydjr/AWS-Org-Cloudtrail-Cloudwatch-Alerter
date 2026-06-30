@@ -423,10 +423,7 @@ per-account overrides, and the well-known-account validation
 | [aws_iam_policy_document.org_cloudtrail_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.replication_assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.replication_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_organizations_organization.org](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
-| [aws_region.west2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
@@ -437,8 +434,6 @@ per-account overrides, and the well-known-account validation
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | The name of the S3 bucket to store CloudTrail logs. Must be globally unique. | `string` | `"company-org-cloudtrail"` | no |
 | <a name="input_default_region"></a> [default\_region](#input\_default\_region) | n/a | `string` | `"us-east-1"` | no |
 | <a name="input_jira_cloud_id"></a> [jira\_cloud\_id](#input\_jira\_cloud\_id) | Atlassian Cloud ID for Jira API access. Not a sensitive value — publicly accessible from https://company.atlassian.net/_edge/tenant_info | `string` | `"11111111-1111-1111-1111-111111111111"` | no |
-| <a name="input_newer_noncurrent_versions"></a> [newer\_noncurrent\_versions](#input\_newer\_noncurrent\_versions) | The number of noncurrent versions Amazon S3 will retain. Must be a non-zero positive integer. | `number` | `5` | no |
-| <a name="input_noncurrent_days"></a> [noncurrent\_days](#input\_noncurrent\_days) | The number of days an object is noncurrent before Amazon S3 can perform the associated action. Must be a positive integer. | `number` | `60` | no |
 | <a name="input_org_accounts"></a> [org\_accounts](#input\_org\_accounts) | Member accounts to create, keyed by short name (without the org prefix).<br/>For each entry:<br/>  - name      defaults to "<org\_prefix>-<key>"<br/>  - email     defaults to the plus-addressed derivation of var.org\_email<br/>  - parent\_id defaults to var.parent\_id<br/>Override any field per account; most entries need no overrides at all. | <pre>map(object({<br/>    name      = optional(string)<br/>    email     = optional(string)<br/>    parent_id = optional(string)<br/>  }))</pre> | <pre>{<br/>  "backend_test": {},<br/>  "carrier-interconnect": {},<br/>  "carrier-lab-us-east-1": {},<br/>  "carrier-prod-us-east-1": {},<br/>  "carrier-prod-us-west-2": {},<br/>  "client_test": {},<br/>  "datascience": {},<br/>  "dev": {},<br/>  "interconnect": {},<br/>  "prod": {},<br/>  "qa": {},<br/>  "root": {},<br/>  "sandbox": {},<br/>  "security": {},<br/>  "stage": {},<br/>  "tooling": {}<br/>}</pre> | no |
 | <a name="input_org_email"></a> [org\_email](#input\_org\_email) | Base email used to derive a unique root email per account via plus-addressing,<br/>e.g. aws@company.com → aws+company-dev@company.com. AWS requires a unique,<br/>deliverable email for each account; plus-addressing lets a single mailbox own<br/>many. Override an individual account with org\_accounts[key].email. | `string` | `"aws@company.com"` | no |
 | <a name="input_org_prefix"></a> [org\_prefix](#input\_org\_prefix) | Prefix applied to every member account name, e.g. "company" → account "company-dev". | `string` | `"company"` | no |
@@ -449,9 +444,7 @@ per-account overrides, and the well-known-account validation
 | <a name="input_s3_key_prefix"></a> [s3\_key\_prefix](#input\_s3\_key\_prefix) | The prefix for the S3 bucket keys. | `string` | `"company-org"` | no |
 | <a name="input_service_name"></a> [service\_name](#input\_service\_name) | n/a | `string` | `"Org-Cloudtrail-Cloudwatch-Alerter"` | no |
 | <a name="input_slack_oncall_group_id"></a> [slack\_oncall\_group\_id](#input\_slack\_oncall\_group\_id) | Optional Slack user-group (subteam) ID to @-mention on every alert, e.g. 'S0123456789'. Leave empty to post alerts without a group mention. | `string` | `""` | no |
-| <a name="input_sse_algorithm"></a> [sse\_algorithm](#input\_sse\_algorithm) | The server-side encryption algorithm to use for the bucket. Default is 'AES256'. | `string` | `"AES256"` | no |
-| <a name="input_storage_class"></a> [storage\_class](#input\_storage\_class) | The storage class used to store the object. Default is 'STANDARD\_IA'. | `string` | `"STANDARD_IA"` | no |
-| <a name="input_workspace_iam_roles"></a> [workspace\_iam\_roles](#input\_workspace\_iam\_roles) | Maps each Terraform workspace to the IAM role the AWS provider assumes for that deploy. This stack runs in the org-management ("root") account, so the only workspace is `root`. Select it before plan/apply: terraform workspace select root  Do NOT run in the `default` workspace — it has no role mapping here on purpose. | `map` | <pre>{<br/>  "root": "arn:aws:iam::111111111101:role/TFAdmin"<br/>}</pre> | no |
+| <a name="input_workspace_iam_roles"></a> [workspace\_iam\_roles](#input\_workspace\_iam\_roles) | Maps each Terraform workspace to the IAM role the AWS provider assumes for that deploy. This stack runs in the org-management ("root") account, so the only workspace is `root`. Select it before plan/apply: terraform workspace select root  Do NOT run in the `default` workspace — it has no role mapping here on purpose. | `map(string)` | <pre>{<br/>  "root": "arn:aws:iam::111111111101:role/TFAdmin"<br/>}</pre> | no |
 
 ## Outputs
 
